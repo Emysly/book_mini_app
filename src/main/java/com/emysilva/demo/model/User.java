@@ -1,33 +1,52 @@
 package com.emysilva.demo.model;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Data
+@Table(	name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username"),
+                @UniqueConstraint(columnNames = "email")
+        })
 @NoArgsConstructor
-public class  User {
-
+@Data
+public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @NotBlank
+    @Size(max = 20)
     private String username;
-    private String firstName;
-    private String lastName;
+
+    @NotBlank
+    @Size(max = 50)
+    @Email
     private String email;
+
+    @NotBlank
+    @Size(max = 120)
     private String password;
-    private boolean enabled;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Book> bookList = new ArrayList<>();
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "user_role",  joinColumns= @JoinColumn(name = "user_id"),
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 }
