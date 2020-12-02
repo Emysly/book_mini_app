@@ -1,7 +1,8 @@
-package com.emysilva.demo.service;
+package com.emysilva.demo.service.impl;
 
 import com.emysilva.demo.model.User;
 import com.emysilva.demo.repository.UserRepository;
+import com.emysilva.demo.service.impl.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

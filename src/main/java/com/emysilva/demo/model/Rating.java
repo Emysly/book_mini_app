@@ -1,5 +1,6 @@
 package com.emysilva.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,5 +18,6 @@ public class Rating {
     private Double avg;
 
     @OneToOne
+    @JsonIgnore
     private Book book;
 }

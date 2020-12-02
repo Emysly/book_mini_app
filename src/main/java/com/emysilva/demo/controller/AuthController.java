@@ -10,7 +10,7 @@ import com.emysilva.demo.model.Role;
 import com.emysilva.demo.model.User;
 import com.emysilva.demo.repository.RoleRepository;
 import com.emysilva.demo.repository.UserRepository;
-import com.emysilva.demo.service.UserDetailsImpl;
+import com.emysilva.demo.service.impl.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

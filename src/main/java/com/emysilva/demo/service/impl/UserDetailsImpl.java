@@ -1,9 +1,8 @@
-package com.emysilva.demo.service;
+package com.emysilva.demo.service.impl;
 
 
 import com.emysilva.demo.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

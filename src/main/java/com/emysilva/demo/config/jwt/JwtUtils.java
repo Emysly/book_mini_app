@@ -1,6 +1,6 @@
 package com.emysilva.demo.config.jwt;
 
-import com.emysilva.demo.service.UserDetailsImpl;
+import com.emysilva.demo.service.impl.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

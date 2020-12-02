@@ -1,5 +1,6 @@
 package com.emysilva.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,13 +25,14 @@ public class Book {
     private Integer inStockNumber;
     private Integer isbn;
     private Double price;
-    private boolean status;
+    private boolean status = false;
     private String author;
 
     @ManyToOne
     private User user;
 
     @OneToOne(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
     private Rating rating;
 
 
