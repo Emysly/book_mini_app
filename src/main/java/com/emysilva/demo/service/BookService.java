@@ -18,4 +18,6 @@ public interface BookService {
     void deleteABook(Long id) throws IdNotFoundException;
 
     Book updateABookStatus(Long id) throws IdNotFoundException;
+
+    Book updateABook(Long id, Book book);
 }

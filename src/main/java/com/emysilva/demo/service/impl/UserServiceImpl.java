@@ -1,16 +1,13 @@
 package com.emysilva.demo.service.impl;
 
-import com.emysilva.demo.dto.MessageResponse;
 import com.emysilva.demo.dto.SignupRequest;
 import com.emysilva.demo.exception.UserExistException;
-import com.emysilva.demo.exception.UserNotFoundException;
 import com.emysilva.demo.model.ERole;
 import com.emysilva.demo.model.Role;
 import com.emysilva.demo.model.User;
 import com.emysilva.demo.repository.RoleRepository;
 import com.emysilva.demo.repository.UserRepository;
 import com.emysilva.demo.service.UserService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

@@ -67,18 +67,7 @@ public class BookController {
 	@PutMapping("/admin/books/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Book> updateABook(@PathVariable Long id, @Valid @RequestBody Book book) {
-		Book newBook = bookService.getABook(id);
-		newBook.setAuthor(book.getAuthor());
-		newBook.setCreatedDate(book.getCreatedDate());
-		newBook.setDescription(book.getDescription());
-		newBook.setInStockNumber(book.getInStockNumber());
-		newBook.setIsbn(book.getIsbn());
-		newBook.setNumberOfPages(book.getNumberOfPages());
-		newBook.setPrice(book.getPrice());
-		newBook.setStatus(book.isStatus());
-		newBook.setTitle(book.getTitle());
-		newBook.setUpdatedDate(book.getUpdatedDate());
-		newBook.setRating(book.getRating());
+		Book newBook = bookService.updateABook(id, book);
 
 		return ResponseEntity.ok(newBook);
 	}

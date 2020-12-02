@@ -8,7 +8,6 @@ import com.emysilva.demo.model.User;
 import com.emysilva.demo.repository.BookRepository;
 import com.emysilva.demo.repository.UserRepository;
 import com.emysilva.demo.service.BookService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -16,11 +15,15 @@ import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {
-    @Autowired
-    BookRepository bookRepository;
 
-    @Autowired
-    UserRepository userRepository;
+    private final BookRepository bookRepository;
+
+    private final UserRepository userRepository;
+
+    public BookServiceImpl(BookRepository bookRepository, UserRepository userRepository) {
+        this.bookRepository = bookRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public List<Book> getAllBooksByStatus() {
@@ -73,5 +76,23 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(id).orElseThrow(() -> new IdNotFoundException("book with id " + id + "not found"));
         book.setStatus(true);
         return bookRepository.save(book);
+    }
+
+    @Override
+    public Book updateABook(Long id, Book book) {
+        if (id < 0) throw new RuntimeException("id must not be less than 0");
+        Book newBook = bookRepository.findById(id).orElseThrow(() -> new IdNotFoundException("book with id " + id + "not found"));
+        newBook.setAuthor(book.getAuthor());
+        newBook.setCreatedDate(book.getCreatedDate());
+        newBook.setDescription(book.getDescription());
+        newBook.setInStockNumber(book.getInStockNumber());
+        newBook.setIsbn(book.getIsbn());
+        newBook.setNumberOfPages(book.getNumberOfPages());
+        newBook.setPrice(book.getPrice());
+        newBook.setStatus(book.isStatus());
+        newBook.setTitle(book.getTitle());
+        newBook.setUpdatedDate(book.getUpdatedDate());
+        newBook.setRating(book.getRating());
+        return newBook;
     }
 }
