@@ -1,5 +1,8 @@
 package com.emysilva.demo.service.impl;
 
+import com.emysilva.demo.exception.BookNotFoundException;
+import com.emysilva.demo.exception.IdNotFoundException;
+import com.emysilva.demo.exception.UserNotFoundException;
 import com.emysilva.demo.model.Book;
 import com.emysilva.demo.model.User;
 import com.emysilva.demo.repository.BookRepository;
@@ -9,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -23,17 +24,26 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getAllBooksByStatus() {
-        return bookRepository.findAllByStatusTrue();
+        List<Book> books = bookRepository.findAllByStatusTrue();
+        if (books.isEmpty()) {
+            throw new BookNotFoundException("book not found");
+        }
+        return books;
     }
 
     @Override
     public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+        List<Book> books = bookRepository.findAll();
+        if (books.isEmpty()) {
+            throw new BookNotFoundException("book not found");
+        }
+        return books;
     }
 
     @Override
     public Book getABook(Long id) {
-        return bookRepository.findById(id).get();
+        if (id < 0) throw new RuntimeException("id must not be less than 0");
+        return bookRepository.findById(id).orElseThrow(() -> new IdNotFoundException("book with id " + id + "not found"));
     }
 
     @Override
@@ -45,19 +55,22 @@ public class BookServiceImpl implements BookService {
         } else {
              username = principal. toString();
         }
-        User user = userRepository.findByUsername(username).get();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("user not found"));
         book.setUser(user);
         return bookRepository.save(book);
     }
 
     @Override
     public void deleteABook(Long id) {
-        bookRepository.deleteById(id);
+        if (id < 0) throw new RuntimeException("id must not be less than 0");
+        Book book = bookRepository.findById(id).orElseThrow(() -> new IdNotFoundException("book with id " + id + "not found"));
+        bookRepository.delete(book);
     }
 
     @Override
     public Book updateABookStatus(Long id) {
-        Book book = bookRepository.findById(id).get();
+        if (id < 0) throw new RuntimeException("id must not be less than 0");
+        Book book = bookRepository.findById(id).orElseThrow(() -> new IdNotFoundException("book with id " + id + "not found"));
         book.setStatus(true);
         return bookRepository.save(book);
     }
