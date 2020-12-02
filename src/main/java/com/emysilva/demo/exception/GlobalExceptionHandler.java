@@ -59,6 +59,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrors);
     }
 
+    @ExceptionHandler(UserExistException.class)
+    protected ResponseEntity<Object> handleUserExistException(UserExistException ex) {
+        ApiErrors apiErrors = new ApiErrors(ex.getMessage(), "User exist", HttpStatus.BAD_REQUEST, LocalDateTime.now() );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrors);
+    }
+
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleOtherException(Exception ex) {
         ApiErrors apiErrors = new ApiErrors(ex.getMessage(), "Other exception", HttpStatus.NOT_FOUND, LocalDateTime.now() );

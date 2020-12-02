@@ -3,17 +3,17 @@ package com.emysilva.demo.controller;
 import com.emysilva.demo.model.Book;
 import com.emysilva.demo.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 public class BookController {
 
 	@Autowired
@@ -32,28 +32,36 @@ public class BookController {
 		return ResponseEntity.ok(books);
 	}
 
-	@GetMapping("/mod/books")
-	@PreAuthorize("hasRole('MODERATOR')")
+	@GetMapping("/user/books/{id}")
+	@PreAuthorize("hasRole('USER')")
+	public ResponseEntity<Book> getABook(@PathVariable Long id) {
+		Book book = bookService.getABook(id);
+
+		return ResponseEntity.ok(book);
+	}
+
+	@GetMapping("/pub/books")
+	@PreAuthorize("hasRole('PUBLISHER')")
 	public ResponseEntity<List<Book>> getAllBooks() {
 		List<Book> books = bookService.getAllBooks();
 
 		return ResponseEntity.ok(books);
 	}
 
-	@PostMapping("/mod/books/status/{id}")
-	@PreAuthorize("hasRole('MODERATOR')")
+	@PostMapping("/pub/books/status/{id}")
+	@PreAuthorize("hasRole('PUBLISHER')")
 	public ResponseEntity<Book> updateABookStatus(@PathVariable Long id) {
 		Book newBook = bookService.updateABookStatus(id);
 
 		return ResponseEntity.ok(newBook);
 	}
 
-	@PostMapping("/mod/books")
-	@PreAuthorize("hasRole('MODERATOR')")
+	@PostMapping("/pub/books")
+	@PreAuthorize("hasRole('PUBLISHER')")
 	public ResponseEntity<Book> createBook(@Valid @RequestBody Book book) {
 		Book newBook = bookService.createBook(book);
 
-		return ResponseEntity.ok(newBook);
+		return ResponseEntity.status(HttpStatus.CREATED).body(newBook);
 	}
 
 	@PutMapping("/admin/books/{id}")
@@ -80,7 +88,7 @@ public class BookController {
 	public ResponseEntity<Void> deleteABook(@PathVariable Long id) {
 		bookService.deleteABook(id);
 
-		return ResponseEntity.ok().build();
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
 }
