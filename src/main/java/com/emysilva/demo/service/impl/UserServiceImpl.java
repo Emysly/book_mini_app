@@ -20,15 +20,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private final UserService userService;
-
     private final RoleRepository roleRepository;
 
     private final PasswordEncoder encoder;
 
-    public UserServiceImpl(UserRepository userRepository, UserService userService, RoleRepository roleRepository, PasswordEncoder encoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
-        this.userService = userService;
         this.roleRepository = roleRepository;
         this.encoder = encoder;
     }
@@ -36,11 +33,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void registerUser(SignupRequest signUpRequest) {
 
-        if (userService.existsByUsername(signUpRequest.getUsername())) {
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             throw new UserExistException("Error: Username is already taken!");
         }
 
-        if (userService.existsByEmail(signUpRequest.getEmail())) {
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new UserExistException("Error: Email is already in use!");
         }
 

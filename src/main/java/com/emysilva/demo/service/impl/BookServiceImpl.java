@@ -1,5 +1,6 @@
 package com.emysilva.demo.service.impl;
 
+import com.emysilva.demo.exception.BookExistException;
 import com.emysilva.demo.exception.BookNotFoundException;
 import com.emysilva.demo.exception.IdNotFoundException;
 import com.emysilva.demo.exception.UserNotFoundException;
@@ -60,6 +61,8 @@ public class BookServiceImpl implements BookService {
         }
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("user not found"));
         book.setUser(user);
+        boolean IsbnExist = bookRepository.existsByIsbn(book.getIsbn());
+        if (IsbnExist) throw new BookExistException("book with isbn already exist");
         return bookRepository.save(book);
     }
 
